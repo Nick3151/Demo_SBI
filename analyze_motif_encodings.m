@@ -21,7 +21,6 @@ k_sel = find((motif_freq>=min_occur_times) & is_significant' & num_neurons_activ
 
 %% Motif encoding stimulus and choices
 [stim_encoding, choice_encoding, joint_encoding, ~, ~, ~] = compute_motifs_encoding_index(motifs_trials_match);
-% [h_stim, h_choice, h_joint, p_stim, p_choice, p_joint] = test_motifs_encoding_index(motifs_trials_match);
 [h_stim, h_choice, h_joint, ind_stim, ind_choice, ind_joint, p_choice, min_p, is_testable] = test_motif_encodings_fisher(motifs_trials_match, k_sel);
 
 %% load motion, reward signal and licking

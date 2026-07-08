@@ -49,95 +49,21 @@ set(gca, 'FontSize', 14, 'XTick', 1:length(k_sel), 'xticklabels', num2str(k_sel)
 % [h1,p1,ci,stats] = ttest2(y{1}, y{2}, 'Tail','left');
 % [h2,p2,ci,stats] = ttest2(y{1}, y{3}, 'Tail','left');
 
-%% Visualize motifs with time traces
-frames = round(5*fs);
+%% Motif reliability metrics for motif k
 X = [X_train, X_test, zeros(N,L)];
 Xhat_train = helper.reconstruct(W,H);
 Xhat_test = helper.reconstruct(W,H_test);
 Xhat = [Xhat_train, Xhat_test, zeros(N,L)];
+tie_tol_frames = 3;
 
 k = 1;
+motif_reliability = compute_motif_reliability( ...
+W, X, Xhat, fs, ...
+neurons_active_motifs, ...
+active_time_motifs_all, ...
+onsets_motifs, ...
+k, [], tie_tol_frames);
+
+%% Visualize motifs with time traces
 Wk = squeeze(W(:,k,:));
-
-inds_trials_tmp = inds_trials_all{k};
-active_time_motifs_tmp = round(active_time_motifs_all{k});
-X_tmp = zeros(N,length(inds_trials_tmp), L);
-Xhat_tmp = zeros(N,length(inds_trials_tmp), L);
-for i=1:length(inds_trials_tmp)
-    X_tmp(:,i,:) = X(:,active_time_motifs_tmp(i)+(1:L));
-    Xhat_tmp(:,i,:) = Xhat(:,active_time_motifs_tmp(i)+(1:L));
-end
-X_tmp_mean = squeeze(mean(X_tmp, 2));
-X_tmp_std = squeeze(std(X_tmp, [], 2));
-
-neurons_active = neurons_active_motifs{k};
-Wk_active = Wk(neurons_active, :);
-Xhat_tmp_active = Xhat_tmp(neurons_active,:,:);
-X_mean_active = X_tmp_mean(neurons_active, :);
-X_std_active = X_tmp_std(neurons_active, :);
-X_tmp_active = X_tmp(neurons_active,:,:);
-N_active = length(neurons_active);
-
-figure; 
-set(gcf,'position',[200,200,900,800])
-dnW = prctile(Wk_active(:),99.9); 
-XsEdge = [0, 0, L]/fs; 
-YsEdge = [0, dnW*N_active, dnW*N_active];
-
-subplot(141)
-for ni =1:N_active
-    Xs = [1, 1:L, L]/fs;
-    Ys = [dnW*(N_active-ni) dnW*(N_active-ni) + Wk_active(ni, :) dnW*(N_active-ni)];
-    patch(Xs,Ys, 'k', 'edgecolor', 'none')
-    hold on
-end
-xline(onsets_motifs{k}/fs, 'r', 'LineWidth',1)
-
-plot(XsEdge,YsEdge, 'LineWidth', 2);
-xlim([0 L]/fs);ylim([0 dnW*N_active])
-set(gca, 'YTick', [])
-
-subplot(142)
-hold on
-dnX = prctile(Xhat_tmp_active(:),99.9); 
-for ni =1:N_active
-    Xs = (1:L)/fs;
-    for i=1:length(inds_trials_tmp)
-        Ys = dnW*(N_active-ni) + squeeze(Xhat_tmp_active(ni, i, :))/dnX*dnW;
-        plot(Xs, Ys, 'Color', [0,0,0,.3], 'LineWidth', 1)
-    end
-
-end
-plot(XsEdge,YsEdge, 'LineWidth', 2);
-xlim([0 L]/fs);ylim([0 dnW*N_active])
-set(gca, 'YTick', [])
-
-subplot(143)
-hold on
-dnX = prctile(X_mean_active(:),99.9); 
-for ni =1:N_active
-    Xs = (1:L)/fs;
-    Ys = dnW*(N_active-ni) + X_mean_active(ni, :)/dnX*dnW;
-    Ys_low = Ys - X_std_active(ni, :)/dnX*dnW;
-    Ys_high = Ys + X_std_active(ni, :)/dnX*dnW;
-    plot(Xs, Ys, 'k', 'LineWidth', 2)
-    patch([Xs, flip(Xs)], [Ys_low flip(Ys_high)], 'k','FaceAlpha',.3, 'EdgeColor', 'none')
-end
-plot(XsEdge,YsEdge, 'LineWidth', 2);
-xlim([0 L]/fs);ylim([0 dnW*N_active])
-set(gca, 'YTick', [])
-
-subplot(144)
-hold on
-dnX = prctile(X_tmp_active(:),99.9); 
-for ni =1:N_active
-    Xs = (1:L)/fs;
-    for i=1:length(inds_trials_tmp)
-        Ys = dnW*(N_active-ni) + squeeze(X_tmp_active(ni, i, :))/dnX*dnW;
-        plot(Xs, Ys, 'Color', [0,0,0,.3], 'LineWidth', 1)
-    end
-
-end
-plot(XsEdge,YsEdge, 'LineWidth', 2);
-xlim([0 L]/fs);ylim([0 dnW*N_active])
-set(gca, 'YTick', [])
+f1 = visualize_motif_traces(Wk, X, Xhat, fs, motif_reliability, true);

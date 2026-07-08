@@ -93,7 +93,7 @@ if overlap_t
     for k = 1:K
         motif_ind{k} = randperm(Trials, Nmotifs(k));
         if warp > 0
-            Hs{k} = randi([-warp, warp],Nmotifs(k),1);
+            Hs{k} = randi([0, warp],Nmotifs(k),1);
         else
             Hs{k} = zeros(Nmotifs(k),1);
         end
@@ -106,7 +106,7 @@ else
     for  k=1:K
         motif_ind{k} = motif_inds_all(inds_tmp(k)+1:inds_tmp(k+1));
         if warp > 0
-            Hs{k} = randi([-warp, warp],Nmotifs(k),1);
+            Hs{k} = randi([0, warp],Nmotifs(k),1);
         else
             Hs{k} = zeros(Nmotifs(k),1);
         end
