@@ -1,5 +1,53 @@
 function [h_stim, h_choice, h_joint, ind_stim, ind_choice, ind_joint, p_choice, min_p, is_testable] = test_motif_encodings_fisher(motifs_trials_match, k_sel)
-% Fisher's exact test
+% TEST_MOTIF_ENCODINGS_FISHER  Fisher exact tests for motif stimulus/choice encoding.
+%
+%   [h_stim, h_choice, h_joint, ind_stim, ind_choice, ind_joint, ...
+%    p_choice, min_p, is_testable] = test_motif_encodings_fisher(motifs_trials_match, k_sel)
+%
+%   For each selected motif, tests whether the motif's occurrence is
+%   significantly associated with the stimulus (Low/High) and with the choice
+%   (Hit/Miss/Error) conditioned on stimulus, using one-sided (right-tail)
+%   Fisher exact tests with Bonferroni-corrected significance thresholds.
+%
+%   INPUTS
+%     motifs_trials_match - table with (K+1) rows and 6 variables ordered
+%         {HitLow, MissLow, ErrLow, HitHigh, MissHigh, ErrHigh}; each cell
+%         lists the trials of that type. Row 1 lists all trials; rows 2..K+1
+%         list the trials in which each of the K motifs occurred.
+%     k_sel  - vector of motif indices (1..K) to test.
+%
+%   For each motif a 3x2x2 count array trials_nums(choice, stim, occurrence)
+%   is built (choice = Hit/Miss/Error, stim = Low/High, occurrence = motif
+%   present/absent). 2x2 contingency tables are formed per category
+%   (one-vs-rest) and tested with FISHERTEST; alpha is Bonferroni corrected by
+%   length(k_sel) times the number of categories tested.
+%
+%   OUTPUTS (indexed by motif k; arrays are length/height K)
+%     h_stim      - 1 if the motif significantly encodes stimulus, else 0.
+%                   Forced to 0 if the motif also encodes choice or joint.
+%     h_choice    - 1 if the motif encodes choice for BOTH stimuli.
+%     h_joint     - 1 if the motif encodes choice for one stimulus only
+%                   (stimulus-specific, i.e. joint choice-by-stimulus).
+%     ind_stim    - cell array; for stimulus-encoding motifs, the significant
+%                   stimulus index/indices (set to 0 when overridden by a
+%                   choice/joint hit).
+%     ind_choice  - cell array; for choice-encoding motifs, the significant
+%                   choice index/indices.
+%     ind_joint   - {K x 2} cell array; column 1 is the choice index, column 2
+%                   the stimulus index/indices, for joint-encoding motifs.
+%     p_choice    - [K x 2] Fisher p-values for the selected choice category
+%                   under each stimulus.
+%     min_p       - [n_choice x n_stim] smallest p-value attainable given the
+%                   table margins of the LAST motif tested (it is overwritten
+%                   each iteration), i.e. the minimum p achievable at that
+%                   sample size.
+%     is_testable - [n_choice x n_stim] logical: whether min_p falls below the
+%                   corrected alpha, i.e. whether a significant result is even
+%                   attainable. Returns all zeros when k_sel is empty.
+%
+%   NOTE: The commented-out block below (unconditioned choice/joint tests) is a
+%   superseded earlier approach; the active logic uses the stimulus-conditioned
+%   tests.
 trial_nums_raw = cellfun(@(x) length(x), motifs_trials_match.Variables);
 K = length(trial_nums_raw)-1;
 

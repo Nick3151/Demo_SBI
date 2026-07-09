@@ -14,7 +14,7 @@ end
 % ops.alg = 'N83';
 
 if params.lambda > 0
-    % Use smooth cross orthogonal panelty regularization
+    % Use smooth cross orthogonal penalty regularization
     % Apply unconstrained split Bregman method to solve 
     smoothkernel = ones(1,(2*L)-1);  % for factor competition
     WTX = helper.transconv(W, X);

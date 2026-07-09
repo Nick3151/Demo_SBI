@@ -27,6 +27,7 @@ file_beh = 'bh_data_Liang.mat';
 file_transients = 'SEUDO_autoclassify.mat';
 load(fullfile(folder_dir, input_folder_name, file_dFF));
 load(fullfile(folder_dir, input_folder_name, file_beh));
+load(fullfile(folder_dir, input_folder_name, file_transients));
 
 %% Find good neurons
 [N,T] = size(dFF);
