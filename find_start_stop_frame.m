@@ -36,7 +36,7 @@ for i=1:trials
 %         end    
 %     end
     
-    % Make sure movement start before and stop after peak velociy time
+    % Make sure movement start before and stop after peak velocity time
     frame_start_candidate(frame_start_candidate>motion_peak_frame) = [];
     frame_stop_candidate(frame_stop_candidate<motion_peak_frame) = [];
 

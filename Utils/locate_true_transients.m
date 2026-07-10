@@ -2,7 +2,7 @@ function [ids_start, ids_end, X_filt] = locate_true_transients(X,l,L)
 % Locate true transients that lasts for at least l frames but less than L
 % frames
 % return the start and end locations of transients
-% X_filt: filtered data after removing all flase transients
+% X_filt: filtered data after removing all false transients
 [N,T] = size(X);
 X_pad = zeros(N,T+2);
 X_pad(:,2:T+1) = X;

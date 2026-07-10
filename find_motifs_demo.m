@@ -107,6 +107,7 @@ display('Refit W to test data')
     'lambda', lambda, 'alpha_W', alpha_W, 'alpha_H', alpha_H, ...
     'W_fixed', 1, 'W_init', W, 'SortFactors', 0, 'neg_prop', 0, 'showPlot', 1);
 
+%% Look at motifs on test data
 figure; SimpleWHPlot(W(indSort,:,:), H_test, 'trials', length(ind_test), 'frames', frames, 'is_significant', is_significant, 'plotAll', plotAll)
 title('FlexMF reconstruction')
 set(gcf,'Units','normalized','Position',[0.1 0.1 0.8 0.8])
@@ -123,15 +124,7 @@ num_neurons_active = cellfun(@(x) length(x), neurons_active_motifs);
 % Select meaningful motifs (be significant and occurred at least 4 times)
 k_sel = find((motif_freq>=min_occur_times) & is_significant' & num_neurons_active>0);
 
-%% Look at motifs on test data
-figure; SimpleWHPlot(W(indSort,:,:), H_test, 'trials', length(ind_test), 'frames', frames, 'is_significant', is_significant, 'plotAll', plotAll)
-title('FlexMF reconstruction')
-set(gcf,'Units','normalized','Position',[0.1 0.1 0.8 0.8])
-figure; SimpleWHPlot(W(indSort,:,:), H_test, 'trials', length(ind_test), 'frames', frames, 'Data', X_test(indSort,:), 'is_significant', is_significant, 'plotAll', plotAll)
-title('FlexMF factors, with raw data')
-set(gcf,'Units','normalized','Position',[0.1 0.1 0.8 0.8])
-
-%% Compare occurance times against behaviors and stimulus
+%% Compare occurrence times against behaviors and stimulus
 groups_new = groups([ind_train; ind_test]);
 ind_HitLow = find(strcmp(groups_new, 'HitLow'))';
 ind_MissLow = find(strcmp(groups_new, 'MissLow'))';

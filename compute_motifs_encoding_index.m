@@ -33,6 +33,7 @@ function [stim_encoding, choice_encoding, joint_encoding, stim_ind, choice_ind, 
 %     choice_ind      - index (1=Hit, 2=Miss, 3=Error) of the preferred choice.
 %     joint_ind       - [K x 2], the [choice, stimulus] indices of the
 %                       preferred joint category.
+
 K = height(motifs_trials_match) - 1;
 stim_encoding = zeros(K,1);
 choice_encoding = zeros(K,1);

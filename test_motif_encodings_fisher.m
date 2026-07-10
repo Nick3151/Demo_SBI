@@ -37,10 +37,8 @@ function [h_stim, h_choice, h_joint, ind_stim, ind_choice, ind_joint, p_choice, 
 %                   the stimulus index/indices, for joint-encoding motifs.
 %     p_choice    - [K x 2] Fisher p-values for the selected choice category
 %                   under each stimulus.
-%     min_p       - [n_choice x n_stim] smallest p-value attainable given the
-%                   table margins of the LAST motif tested (it is overwritten
-%                   each iteration), i.e. the minimum p achievable at that
-%                   sample size.
+%     min_p       - [n_choice x n_stim] smallest p-value attainable at each 
+%                   stimulus-choice combination.
 %     is_testable - [n_choice x n_stim] logical: whether min_p falls below the
 %                   corrected alpha, i.e. whether a significant result is even
 %                   attainable. Returns all zeros when k_sel is empty.

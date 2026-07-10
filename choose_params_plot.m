@@ -56,7 +56,7 @@ end
 set(f1, 'Position',[100 100 900 900])
 
 %% Plot sparseness and cross correlations between neurons
-% Auxillary metric used in SBI
+% Auxiliary metric used in SBI
 % Find a point in which both sparseH and normalized corr_prctiles_noise is low
 
 sparseH = cellfun(@mean, sparseness_Hs);

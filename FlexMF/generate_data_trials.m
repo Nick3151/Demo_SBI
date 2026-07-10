@@ -210,7 +210,7 @@ end
 X = X + (~X).*X_noise;
 X(isnan(X)) = 0;
 
-%% Include calcimu dynamic
+%% Include calcium dynamics
 if dynamic
     filtbio = exp(-(0:8)/4); 
     data = zeros(N,Length,Trials);

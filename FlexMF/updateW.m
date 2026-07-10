@@ -14,7 +14,7 @@ if ~params.showPlot
 end
 
 if params.neg_prop==0 && params.lambda > 0
-    % Use smooth cross orthogonal panelty regularization
+    % Use smooth cross orthogonal penalty regularization
     % Apply unconstrained split Bregman method to solve 
     smoothkernel = ones(1,(2*L)-1);  % for factor competition
     

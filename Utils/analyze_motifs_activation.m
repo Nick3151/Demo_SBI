@@ -24,6 +24,8 @@ H_filt = filtfilt(ones(1,5)/5,1,double(H)')';
 H_pad = zeros(K, T+2);
 H_pad(:,2:T+1) = H_filt;
 dH = diff(H_pad>0,1,2);
+X = [X, zeros(N,L)];
+
 for k=1:K
     times = [];
     magnitudes = [];
@@ -50,7 +52,6 @@ for k=1:K
         neurons_active_motifs{k} = [];
         onsets_motifs{k} = NaN;
     else
-        X = [X, zeros(N,L)];
         X_tmp = zeros(N,length(times), L);
         Wk = squeeze(W(:,k,:));
         for i=1:length(times)

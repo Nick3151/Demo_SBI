@@ -36,7 +36,7 @@ function [W, H, cost, errors, loadings, power] = FlexMF(X, varargin)
 %  X                                                    Data matrix (NxT) to factorize
 % 'K'               10                                  Number of factors
 % 'L'               100                                 Length (timebins) of each factor exemplar
-% 'lambda'          .001                                Regularization parameter
+% 'lambda'          .01                                Regularization parameter
 % 'alpha_H'         1e-3                                Regularization parameter for H
 % 'alpha_W'         1e-6                                Regularization parameter for W
 % 'W_init'          max(X(:))*rand(N,K,L)               Initial W
@@ -143,7 +143,6 @@ for iter = 1 : params.maxiter
     end
 %     H0 = max(H_pre(:))*rand(K,T); 
     H0 = H_pre;
-    W_tmp = W + 0.05*max(W_pre(:))*rand(N, K, L);
     H = updateH(W, H0, X, params);   
 
 %     toc

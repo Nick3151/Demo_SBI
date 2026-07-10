@@ -5,8 +5,8 @@ clc
 
 root = pwd;
 folder_dir = fullfile(root, 'Data');
-addpath(genpath(fullfile(root, 'CoDybase-MATLAB')))
 addpath(genpath(fullfile(root, 'FlexMF')))
+addpath(genpath(fullfile(root, 'Utils')))
 
 input_folder_name = '20240618MH041724';
 output_path = fullfile(folder_dir, input_folder_name);

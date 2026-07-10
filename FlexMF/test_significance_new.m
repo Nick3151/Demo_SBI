@@ -27,6 +27,7 @@ function [pvals,is_significant,is_single] = test_significance_new(TestData, W,pl
 % pvals                      A vector (1xK) containing the p-value of each factor
 % is_significant             A boolean vector (1xK) which is 1 if a factor
 %                            is significant using the specified pvalue with correction
+% is_single                  A boolean vector (1xK) which is 1 if a factor is a single neuron and not significant
 %
 % ------------------------------------------------------------------------
 % CREDITS:

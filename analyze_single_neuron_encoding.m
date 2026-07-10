@@ -17,7 +17,6 @@ root = pwd;
 folder_dir = fullfile(root, 'Data');
 
 addpath(fullfile(root, 'Utils'))
-addpath(genpath(fullfile(root, 'CoDybase-MATLAB')))
 
 disp(input_folder_name)
 output_path = fullfile(folder_dir, input_folder_name);

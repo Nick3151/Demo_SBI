@@ -1,6 +1,6 @@
 function choose_params(input_folder_name)
 % We want the temporal loadings H to be sparse, motifs W themselves do
-% not need to be saprse, we thus set alpha_W to be 1e-6 and run SBI
+% not need to be sparse, we thus set alpha_W to be 1e-6 and run SBI
 % with different lambdas and alpha_Hs.
 
 % choose_params.mat contains the SBI results under each combination of lambda and alpha_H

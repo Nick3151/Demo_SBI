@@ -27,7 +27,7 @@ for tau = 1:L % go through every offset from 1:tau
     X_hat = X_hat + W(:, :, tau) * circshift(H,[0,tau-1]);
 end
 
-% undo zer0padding
+% undo zeropadding
 X_hat = X_hat(:,(L+1):(end-L)); 
 
 end
