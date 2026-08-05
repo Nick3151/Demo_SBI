@@ -1,0 +1,22 @@
+# Data directories
+Data/
+
+# Archive and image data
+*.zip
+*.tiff
+*.jpg
+*.pdf
+*.mat
+*.png
+*.fig
+
+# MATLAB autosave and compiled
+*.asv
+*.mex*
+*.mexw64
+*.mexmaci64
+*.mexa64
+
+# Scripts excluded from repo
+*.sh
+*.tex
