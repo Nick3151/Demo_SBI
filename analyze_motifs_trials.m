@@ -21,8 +21,9 @@ load(fullfile(folder_dir, input_folder_name, file_dFF));
 motif_freq = cellfun(@(x) length(x), inds_trials_all);
 num_neurons_active = cellfun(@(x) length(x), neurons_active_motifs);
 min_occur_times = 4;
-% Select meaningful motifs (be significant and occurred at least 4 times)
-k_sel = find((motif_freq>=min_occur_times) & is_significant' & num_neurons_active>0);
+% Select meaningful motifs (be significant, occurred at least 4 times and have
+% at least 2 active neurons), as in analyze_motif_encodings
+k_sel = find((motif_freq>=min_occur_times) & is_significant' & num_neurons_active>1);
 
 %% Motif encoding task variables
 [stim_encoding, choice_encoding, joint_encoding, ind_stim, ind_choice, ind_joint] = compute_motifs_encoding_index(motifs_trials_match);

@@ -150,7 +150,7 @@ coeffs_H_SBI = zeros(nSim, K);
 
 for i=1:nSim
     is_significant_SeqNMF = logical(is_significants_SeqNMF{i});
-    is_significant_SBI = logical(is_significants_SBI{1});
+    is_significant_SBI = logical(is_significants_SBI{i});
     W = Ws{i};
     H = Hs{i};
     W_hat_SeqNMF = W_hats_SeqNMF{i};

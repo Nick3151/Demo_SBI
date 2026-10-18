@@ -181,8 +181,9 @@ end
 motif_freq = cellfun(@(x) length(x), inds_trials_all);
 min_occur_times = 4;
 num_neurons_active = cellfun(@(x) length(x), neurons_active_motifs);
-% Select meaningful motifs (be significant and occurred at least 4 times)
-k_sel = find((motif_freq>=min_occur_times) & is_significant' & num_neurons_active>0);
+% Select meaningful motifs (be significant, occurred at least 4 times and have
+% at least 2 active neurons), as for the real data in analyze_motif_encodings
+k_sel = find((motif_freq>=min_occur_times) & is_significant' & num_neurons_active>1);
 
 %% Look at motifs on test data
 if showplot

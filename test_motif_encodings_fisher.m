@@ -25,18 +25,21 @@ function [h_stim, h_choice, h_joint, ind_stim, ind_choice, ind_joint, p_choice, 
 %   OUTPUTS (indexed by motif k; arrays are length/height K)
 %     h_stim      - 1 if the motif significantly encodes stimulus, else 0.
 %                   Forced to 0 if the motif also encodes choice or joint.
-%     h_choice    - 1 if the motif encodes choice for BOTH stimuli.
-%     h_joint     - 1 if the motif encodes choice for one stimulus only
-%                   (stimulus-specific, i.e. joint choice-by-stimulus).
+%     h_choice    - 1 if the motif encodes a choice under BOTH stimuli.
+%     h_joint     - 1 if the motif encodes a choice under one stimulus only
+%                   (stimulus-specific, i.e. joint choice-by-stimulus), and
+%                   no choice under both stimuli. Stimulus, choice and joint
+%                   encoding are mutually exclusive.
 %     ind_stim    - cell array; for stimulus-encoding motifs, the significant
 %                   stimulus index/indices (set to 0 when overridden by a
 %                   choice/joint hit).
 %     ind_choice  - cell array; for choice-encoding motifs, the significant
 %                   choice index/indices.
-%     ind_joint   - {K x 2} cell array; column 1 is the choice index, column 2
-%                   the stimulus index/indices, for joint-encoding motifs.
-%     p_choice    - [K x 2] Fisher p-values for the selected choice category
-%                   under each stimulus.
+%     ind_joint   - {K x 2} cell array of paired row vectors for
+%                   joint-encoding motifs: (ind_joint{k,1}(j), ind_joint{k,2}(j))
+%                   is the j-th encoded (choice, stimulus) pair.
+%     p_choice    - [K x 2] Fisher p-values for the most significant encoded
+%                   choice under each stimulus.
 %     min_p       - [n_choice x n_stim] smallest p-value attainable at each 
 %                   stimulus-choice combination.
 %     is_testable - [n_choice x n_stim] logical: whether min_p falls below the
@@ -115,15 +118,28 @@ for i=1:length(k_sel)
         end
     end
 
-    h_choice(k) = any(all(h_cond,2));
+    % Choice encoding: a choice is encoded under every stimulus. Joint encoding:
+    % a choice is encoded under some stimuli only. Stimulus, choice and joint
+    % encoding are exclusive: choice takes precedence over joint, and either
+    % removes stimulus encoding. All encoded choices are kept, and all encoded
+    % (choice, stimulus) pairs for joint encoding: pair j is
+    % (ind_joint{k,1}(j), ind_joint{k,2}(j)).
+    is_choice = all(h_cond,2);
+    is_joint = h_cond & ~is_choice;
+    h_choice(k) = any(is_choice);
     if h_choice(k)
-        ind_choice{k} = find(all(h_cond,2));
-        p_choice(k,:) = p_cond(ind_choice{k},:);
+        ind_choice{k} = find(is_choice)';
+        % p values of the most significant encoded choice
+        p_tmp = max(p_cond, [], 2);
+        p_tmp(~is_choice) = inf;
+        [~, c_min] = min(p_tmp);
+        p_choice(k,:) = p_cond(c_min,:);
     end
-    h_joint(k) = any(any(h_cond,2) & ~all(h_cond,2));
+    h_joint(k) = ~h_choice(k) && any(is_joint(:));
     if h_joint(k)
-        ind_joint{k,1} = find(any(h_cond,2) & ~all(h_cond,2));
-        ind_joint{k,2} = find(h_cond(ind_joint{k,1},:));
+        [c_joint, s_joint] = find(is_joint);
+        ind_joint{k,1} = c_joint';
+        ind_joint{k,2} = s_joint';
     end
 
     if h_choice(k) || h_joint(k)
