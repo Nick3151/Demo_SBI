@@ -255,21 +255,21 @@ for n=1:N
         end
     end
     
+    % Stimulus, choice and joint encoding are exclusive: choice- and
+    % joint-encoding neurons are excluded from stimulus encoding
     choice_encoding(n) = h_choice_high(n) && h_choice_low(n) && (max_idx_high==max_idx_low);
     joint_encoding(n) = ~choice_encoding(n) && (h_choice_low(n) || h_choice_high(n));
-    stimulus_encoding(n) = any(neurons_response_stim{n,2:7}); % && ~joint_encoding(n) && ~choice_encoding(n);
-    
+    stimulus_encoding(n) = any(neurons_response_stim{n,2:7}) && ~joint_encoding(n) && ~choice_encoding(n);
+
     if choice_encoding(n)
         ind_choice{n} = max_idx_high;
     end
     if joint_encoding(n)
-        if h_choice_low(n)
-            ind_joint{n,1} = max_idx_low;
-            ind_joint{n,2} = 1;
-        elseif h_choice_high(n)
-            ind_joint{n,1} = max_idx_high;
-            ind_joint{n,2} = 2;
-        end
+        % All encoded (choice, stimulus) pairs: pair j is (ind_joint{n,1}(j), ind_joint{n,2}(j))
+        h_pairs = [h_choice_low(n), h_choice_high(n)];
+        max_idx_pairs = [max_idx_low, max_idx_high];
+        ind_joint{n,1} = max_idx_pairs(h_pairs);
+        ind_joint{n,2} = find(h_pairs);
     end
     if stimulus_encoding(n)
         [~,ind_stim{n}] = max([mean(dFF_bh_mean(n,ind_Low)), mean(dFF_bh_mean(n,ind_High))]);

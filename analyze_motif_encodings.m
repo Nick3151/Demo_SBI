@@ -88,7 +88,7 @@ for j=1:length(k_sel)
         rot_speed_trials_std = std(rot_speed_trials, 1);
         
         % Stopping frame of motion in each trial
-        [frames_start, frames_stop, ~] = find_start_stop_frame(frames_result_trials(inds_trials_tmp), fs, rot_speed_trials);
+        [frames_start, frames_stop, ~] = find_start_stop_frame(frames_result_trials(ind_all(inds_trials_tmp)), fs, rot_speed_trials);
         
         % test if motif onsets relative to motion stop/reward is more aligned than
         % motif onsets relative to trial onsets
