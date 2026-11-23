@@ -42,3 +42,15 @@ If you use this code, please cite:
 [1] Xiang, Liang, et al. "Precise Extraction of Neural Motifs Reveals Multiscale, Parallel Encoding Schemes in Auditory Cortex." bioRxiv (2025).
 
 [2] Becker, Stephen R., Emmanuel J. Candès, and Michael C. Grant. "Templates for convex cone problems with applications to sparse signal recovery." Mathematical programming computation 3.3 (2011): 165-218.
+
+## License
+
+Copyright (c) 2026 [Liang Xiang].
+
+Except where otherwise noted, the original material in this repository
+is licensed under the Creative Commons
+Attribution-NonCommercial-ShareAlike 4.0 International License
+(CC BY-NC-SA 4.0).
+
+See [LICENSE](LICENSE) for the full terms:
+https://creativecommons.org/licenses/by-nc-sa/4.0/
